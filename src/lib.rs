@@ -2,11 +2,14 @@
 
 /// Stub out dbg because it slows down fuzzing and tends to explode Kani
 // #[allow(unused_macros)]
-// #[cfg(any(kani, fuzzing))]
+#[cfg(any(kani, fuzzing))]
 #[macro_export]
 macro_rules! dbg {
     ($($tt:tt)*) => {};
 }
+
+#[cfg(not(any(kani, fuzzing)))]
+pub use std::dbg;
 
 // Re-export kani::cover so only one, non-cfg, import is needed
 #[cfg(kani)]
