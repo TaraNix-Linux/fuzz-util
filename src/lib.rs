@@ -1,15 +1,20 @@
 //! Utility macros, stubs, and wrappers useful for various fuzzers and provers
+#![no_std]
 
 /// Stub out dbg because it slows down fuzzing and tends to explode Kani
 // #[allow(unused_macros)]
-#[cfg(any(kani, fuzzing))]
+// #[cfg(any(kani, fuzzing))]
 #[macro_export]
 macro_rules! dbg {
-    ($($tt:tt)*) => {};
+    ($($tt:tt)*) => {
+        #[cfg(not(any(kani, fuzzing)))]
+        {
+            extern crate std;
+            pub use std::dbg;
+            dbg!($($tt)*);
+        }
+    };
 }
-
-#[cfg(not(any(kani, fuzzing)))]
-pub use std::dbg;
 
 // Re-export kani::cover so only one, non-cfg, import is needed
 #[cfg(kani)]
