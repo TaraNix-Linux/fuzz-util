@@ -6,13 +6,19 @@
 // #[cfg(any(kani, fuzzing))]
 #[macro_export]
 macro_rules! dbg {
-    ($($tt:tt)*) => {
+    () => {};
+    ($e:expr $(,)?) => {{
         #[cfg(not(any(kani, fuzzing)))]
         {
             extern crate std;
-            pub use std::dbg;
-            dbg!($($tt)*);
+            std::dbg!($e);
         }
+        #[cfg(any(kani, fuzzing))]
+        {}
+    }
+    };
+    ($($e:expr),+ $(,)?) => {
+        ($($crate::dbg!($e)),+,)
     };
 }
 
