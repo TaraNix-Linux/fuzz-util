@@ -20,6 +20,14 @@ macro_rules! dbg {
 #[cfg(kani)]
 pub use ::kani::cover;
 
+// So other crates can `use fuzz_util::kani` without any cfgs,
+// and then use `if cfg!(kani)` without errors,
+// instead of `#[cfg(kani)]` which has no type checking or IDE features
+#[cfg(kani)]
+pub mod kani {
+    pub use ::kani::*;
+}
+
 #[cfg(not(kani))]
 // #[allow(dead_code)]
 pub mod kani {
