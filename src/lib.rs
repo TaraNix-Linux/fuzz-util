@@ -55,7 +55,7 @@ pub mod kani {
 
     /// Any [`kani::Arbitrary`] value
     pub fn any<T>() -> T {
-        todo!()
+        todo!("API requires Kani")
     }
 
     /// Assume to be true
