@@ -46,7 +46,7 @@ pub mod kani {
     /// `kani::cover` must be `cfg(kani)` imported within modules needing it
     #[macro_export]
     macro_rules! cover {
-        ($e:expr, $($tt:tt)*) => {{
+        ($e:expr $(, $($msg:literal)?)?) => {{
             // Make rust-analyzer and warnings useful
             // #[cfg(rust_analyzer)]
             #[allow(dead_code, unused_imports)]
@@ -54,10 +54,11 @@ pub mod kani {
                 // Bring our stub kani module in scope
                 use $crate::kani;
                 if false {
-                    let _ = $e;
+                    let _: bool = $e;
                 }
             };
         }};
+        () => {};
         ($($tt:tt)*) => {};
     }
 
