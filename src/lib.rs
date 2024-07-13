@@ -11,10 +11,13 @@ macro_rules! dbg {
         #[cfg(not(any(kani, fuzzing)))]
         {
             extern crate std;
-            std::dbg!($e);
+            std::dbg!($e)
         }
         #[cfg(any(kani, fuzzing))]
-        {}
+        {
+            let _x = $e;
+            _x
+        }
     }
     };
     ($($e:expr),+ $(,)?) => {
